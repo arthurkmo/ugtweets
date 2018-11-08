@@ -153,22 +153,21 @@
                                     string<? #:key get-key-as-string) ""))
              (list
               (generate-auth-header "post" base-url post-data)))))))
-
-
+;consumer key and access key
 (define twitter-oauth (new oauth-single-user%  
-     [consumer-key "IeuGaViCctVJ6rIKxbYfSiXzm"]
-     [consumer-secret "7pIbwODvhQ58YYycHvUEi6MfNNMffju3mQHRDjGqFR6yrrvc2g"]
-     [access-token "1977499933-cu6wXh7X48AV7rRrF4LhlruI3El9p4nQUSZbKLv"]
-     [access-token-secret "VkhC0axbwEInxSbesq0qduj1oS9ZAO4tzuLqZohmn7SiL"]))
+     [consumer-key "FNdM5Cve6zDULYGeENafpncfB"]
+     [consumer-secret "Q0qezXAGOq130uLSQvq7g84CwP6yK4vCIoI1hRyUaFIwqNYlbe"]
+     [access-token "808671618-xagI8SsSrarkJdbNXciXPIUAjA2nSjieI7lJOkJv"]
+     [access-token-secret "pohTt67sUHb04Ki4q4LfeLbDP9y30mjHrABwEFPdF27Cw"]))
 
-(define raw_tweets (car
+(define rare_tweets (car
   (send twitter-oauth get-request
         "https://api.twitter.com/1.1/search/tweets.json"
         (list (cons 'q "")
-              (cons 'count "5")
+              (cons 'count "7")
               (cons 'geocode "1.3707295,32.3032414,200km") ;;; coordinates for uganda 
               (cons 'since "2018-11-06")
-              (cons 'until "2018-11-07")))))
+              (cons 'until "2018-11-08")))))
 
 (define (json-lines->json-array #:head [head #f])
   (let loop ([num 0]
@@ -189,7 +188,7 @@
        lst))
 
 (define tweets (string->jsexpr
-                (with-input-from-bytes raw_tweets (λ () (json-lines->json-array)))))
+                (with-input-from-bytes rare_tweets (λ () (json-lines->json-array)))))
 
 (define t (car (car
                   (let ([tmp (map (λ (x) (list (hash-ref x 'statuses))) tweets)])
